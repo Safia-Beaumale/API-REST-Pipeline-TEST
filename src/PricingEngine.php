@@ -79,4 +79,35 @@ class PricingEngine
 
         return round(max(0.0, $total), 2);
     }
+
+    public static function calculateSurge(float $hour, int $dayOfWeek): float
+    {
+        if ($dayOfWeek < 1 || $dayOfWeek > 7) {
+            throw new \InvalidArgumentException('dayOfWeek must be between 1 (Monday) and 7 (Sunday)');
+        }
+
+        if ($hour < 10.0 || $hour >= 22.0) {
+            return 0.0;
+        }
+
+        if ($dayOfWeek === 7) {
+            return 1.2;
+        }
+
+        if (($dayOfWeek === 5 || $dayOfWeek === 6) && $hour >= 19.0) {
+            return 1.8;
+        }
+
+        if ($dayOfWeek >= 1 && $dayOfWeek <= 4) {
+            if ($hour >= 12.0 && $hour < 13.5) {
+                return 1.3;
+            }
+
+            if ($hour >= 19.0 && $hour < 21.0) {
+                return 1.5;
+            }
+        }
+
+        return 1.0;
+    }
 }
