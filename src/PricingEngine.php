@@ -12,15 +12,6 @@ class PricingEngine
     private const FEE_PER_KM = 0.50;
     private const HEAVY_WEIGHT_KG = 5.0;
     private const HEAVY_WEIGHT_SUPPLEMENT = 1.50;
-    private const DEFAULT_PROMO_CODES = [
-        [
-            'code' => 'BIENVENUE20',
-            'type' => 'percentage',
-            'value' => 20,
-            'minOrder' => 15.00,
-            'expiresAt' => '2026-12-31',
-        ],
-    ];
 
     public static function calculateDeliveryFee(float $distance, float $weight): ?float
     {
@@ -64,7 +55,7 @@ class PricingEngine
         }
 
         if ($promo === null) {
-            throw new \InvalidArgumentException("Unknown promo code: {$promoCode}");
+            throw new NotFoundException("Unknown promo code: {$promoCode}");
         }
 
         $today = new \DateTimeImmutable('today');
@@ -153,7 +144,7 @@ class PricingEngine
         }
 
         $subtotal = round($subtotal, 2);
-        $discountedSubtotal = self::applyPromoCode($subtotal, $promoCode, self::DEFAULT_PROMO_CODES);
+        $discountedSubtotal = self::applyPromoCode($subtotal, $promoCode, PromoCodeRepository::getAll());
         $discount = round($subtotal - $discountedSubtotal, 2);
 
         $deliveryFee = self::calculateDeliveryFee($distance, $weight);

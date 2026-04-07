@@ -2,6 +2,10 @@
     "name": "student/tp-tests",
     "description": "TP Tests, Couverture & Qualité",
     "type": "project",
+    "require": {
+        "slim/slim": "^4",
+        "slim/psr7": "^1"
+    },
     "require-dev": {
         "phpunit/phpunit": "^11",
         "phpstan/phpstan": "^1",
