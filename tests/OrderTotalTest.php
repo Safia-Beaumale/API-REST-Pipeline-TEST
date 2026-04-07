@@ -140,14 +140,4 @@ class OrderTotalTest extends TestCase
         $this->assertSame(30.62, $result['total']);
     }
 
-    public function test_should_fail_demo_when_asserting_wrong_total_on_purpose(): void
-    {
-        $items = [
-            ['name' => 'Pizza', 'price' => 12.50, 'quantity' => 2],
-        ];
-
-        $result = PricingEngine::calculateOrderTotal($items, 5.0, 2.0, null, 15.0, 2);
-
-        $this->assertSame(99.99, $result['total']);
-    }
 }
