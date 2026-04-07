@@ -35,4 +35,48 @@ class PricingEngine
 
         return round($fee, 2);
     }
+
+    public static function applyPromoCode(float $subtotal, ?string $promoCode, array $promoCodes): float
+    {
+        if ($subtotal < 0) {
+            throw new \InvalidArgumentException('Subtotal must be non-negative');
+        }
+
+        if ($promoCode === null || $promoCode === '') {
+            return $subtotal;
+        }
+
+        $promo = null;
+        foreach ($promoCodes as $p) {
+            if ($p['code'] === $promoCode) {
+                $promo = $p;
+                break;
+            }
+        }
+
+        if ($promo === null) {
+            throw new \InvalidArgumentException("Unknown promo code: {$promoCode}");
+        }
+
+        $today = new \DateTimeImmutable('today');
+        $expiresAt = new \DateTimeImmutable($promo['expiresAt']);
+
+        if ($expiresAt < $today) {
+            throw new \InvalidArgumentException("Promo code {$promoCode} has expired");
+        }
+
+        if ($subtotal < $promo['minOrder']) {
+            throw new \InvalidArgumentException(
+                "Subtotal does not meet the minimum order of {$promo['minOrder']}€"
+            );
+        }
+
+        if ($promo['type'] === 'percentage') {
+            $total = $subtotal * (1 - $promo['value'] / 100);
+        } else {
+            $total = $subtotal - $promo['value'];
+        }
+
+        return round(max(0.0, $total), 2);
+    }
 }
