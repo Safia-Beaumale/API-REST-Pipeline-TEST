@@ -139,5 +139,4 @@ class OrderTotalTest extends TestCase
         $this->assertSame(0.00, $result['discount']);
         $this->assertSame(30.62, $result['total']);
     }
-
 }
