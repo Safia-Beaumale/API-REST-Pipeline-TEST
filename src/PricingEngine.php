@@ -6,7 +6,6 @@ namespace App;
 
 class PricingEngine
 {
-public const LINT_BREAK_DEMO = true;
     private const BASE_FEE = 2.00;
     private const FREE_DISTANCE_KM = 3.0;
     private const MAX_DISTANCE_KM = 10.0;
