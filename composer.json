@@ -23,7 +23,8 @@
     },
     "scripts": {
         "test": "phpunit --testdox",
-        "test:coverage": "phpunit --coverage-text",
+        "test:coverage": "phpunit --coverage-text --coverage-clover coverage/clover.xml --coverage-html coverage/html",
+        "test:coverage:check": "phpunit --coverage-text --coverage-clover coverage/clover.xml --coverage-html coverage/html && php tools/check-coverage-threshold.php coverage/clover.xml 80",
         "lint": "phpcs src/ tests/",
         "stan": "phpstan analyse src/ --level=5"
     }
